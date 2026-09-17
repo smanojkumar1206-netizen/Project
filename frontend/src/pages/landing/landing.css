@@ -1,0 +1,979 @@
+/* ==========================================================================
+   AGRICONNECT DYNAMIC LANDING PAGE STYLES
+   Modern, Glassmorphic, Premium Agricultural Platform Aesthetics
+   ========================================================================== */
+
+:root {
+  --landing-bg: #07170f;
+  --landing-bg-card: rgba(16, 44, 28, 0.7);
+  --landing-bg-glass: rgba(255, 255, 255, 0.06);
+  --landing-border: rgba(34, 197, 94, 0.18);
+  --landing-border-hover: rgba(34, 197, 94, 0.45);
+  --landing-primary: #10b981;
+  --landing-primary-hover: #059669;
+  --landing-accent: #22c55e;
+  --landing-gold: #f59e0b;
+  --landing-text-main: #f0fdf4;
+  --landing-text-muted: #94a3b8;
+  --landing-text-soft: #cbd5e1;
+}
+
+.landingWrapper {
+  min-height: 100vh;
+  width: 100%;
+  background: radial-gradient(circle at 50% 0%, #0d3822 0%, #081c12 50%, #040e08 100%);
+  color: var(--landing-text-main);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Background Atmospheric Glows */
+.landingAmbientGlow1 {
+  position: absolute;
+  top: -100px;
+  left: 20%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(16, 185, 129, 0.15) 0%, rgba(16, 185, 129, 0) 70%);
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.landingAmbientGlow2 {
+  position: absolute;
+  top: 900px;
+  right: 5%;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.1) 0%, rgba(245, 158, 11, 0) 70%);
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Container */
+.landingContainer {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+
+/* ==================== 1. TOP NAVBAR ==================== */
+.landingNav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(7, 23, 15, 0.8);
+  border-bottom: 1px solid var(--landing-border);
+  transition: all 0.3s ease;
+}
+
+.landingNavInner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 76px;
+}
+
+.landingBrand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.landingBrandIcon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.landingBrandText {
+  display: flex;
+  flex-direction: column;
+}
+
+.landingBrandTitle {
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.landingBrandTagline {
+  font-size: 11px;
+  font-weight: 500;
+  color: #86efac;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.landingNavLinks {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.landingNavLink {
+  color: var(--landing-text-soft);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  position: relative;
+  cursor: pointer;
+}
+
+.landingNavLink:hover {
+  color: #86efac;
+}
+
+.landingNavActions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btnNavSecondary {
+  padding: 8px 18px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnNavSecondary:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Dedicated Login Button in Nav */
+.btnNavLoginPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 22px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: 1px solid #34d399;
+  color: #042f1a;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(16, 185, 129, 0.35);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btnNavLoginPrimary:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.5);
+  color: #022112;
+}
+
+/* Mobile Menu Button */
+.mobileMenuToggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  padding: 6px;
+}
+
+/* ==================== 2. HERO SECTION ==================== */
+.landingHeroSection {
+  padding: 60px 0 90px;
+  position: relative;
+}
+
+.landingHeroGrid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.heroTagBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(16, 185, 129, 0.12);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #86efac;
+  margin-bottom: 24px;
+}
+
+.heroTagPulse {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 10px #22c55e;
+  animation: pulseAnimation 2s infinite;
+}
+
+@keyframes pulseAnimation {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+.heroTitle {
+  font-size: 48px;
+  font-weight: 850;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0 0 20px;
+  letter-spacing: -0.02em;
+}
+
+.heroHighlightGreen {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 60%, #6ee7b7 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.heroDescription {
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--landing-text-muted);
+  margin: 0 0 32px;
+  max-width: 580px;
+}
+
+/* Dedicated Action Buttons */
+.heroCtaCluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.btnHeroLoginPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 30px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  border: 1px solid #6ee7b7;
+  color: #042f1a;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+  transition: all 0.25s ease;
+}
+
+.btnHeroLoginPrimary:hover {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(16, 185, 129, 0.55);
+  color: #022112;
+}
+
+.btnHeroSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 26px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btnHeroSecondary:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.35);
+  transform: translateY(-2px);
+}
+
+/* Qualitative Feature Badges in Hero */
+.heroQualitativePills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.qualitativePill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 30px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  color: #cbd5e1;
+  font-weight: 500;
+}
+
+.qualitativePill svg {
+  color: #34d399;
+}
+
+/* Hero Media Display */
+.heroVisualWrapper {
+  position: relative;
+}
+
+.heroImageCard {
+  position: relative;
+  border-radius: 24px;
+  overflow: hidden;
+  border: 1px solid var(--landing-border);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+  background: #0d281a;
+}
+
+.heroMainImg {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.heroImageCard:hover .heroMainImg {
+  transform: scale(1.03);
+}
+
+.heroImageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(7, 23, 15, 0) 50%, rgba(7, 23, 15, 0.85) 100%);
+  pointer-events: none;
+}
+
+/* Floating Glass Badges */
+.floatingGlassBadge {
+  position: absolute;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: rgba(13, 38, 25, 0.82);
+  border: 1px solid rgba(52, 211, 153, 0.3);
+  border-radius: 16px;
+  padding: 12px 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.floatingGlassBadge:hover {
+  transform: translateY(-4px) scale(1.02);
+}
+
+.badgeTopRight {
+  top: -16px;
+  right: -16px;
+  animation: floatSubtle1 5s ease-in-out infinite alternate;
+}
+
+.badgeBottomLeft {
+  bottom: -20px;
+  left: -16px;
+  animation: floatSubtle2 6s ease-in-out infinite alternate;
+}
+
+@keyframes floatSubtle1 {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
+}
+
+@keyframes floatSubtle2 {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(8px); }
+}
+
+.badgeIconCircle {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(34, 197, 94, 0.18);
+  color: #34d399;
+  display: grid;
+  place-items: center;
+}
+
+.badgeTextGroup {
+  display: flex;
+  flex-direction: column;
+}
+
+.badgeTextPrimary {
+  font-size: 13px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.badgeTextSecondary {
+  font-size: 11px;
+  color: #86efac;
+}
+
+/* ==================== 3. ROLE-BASED ECOSYSTEM EXPLORER ==================== */
+.sectionRoles {
+  padding: 80px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 48px;
+}
+
+.sectionSuperTitle {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #34d399;
+  margin-bottom: 8px;
+}
+
+.sectionHeading {
+  font-size: 34px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 16px;
+  letter-spacing: -0.01em;
+}
+
+.sectionSubtext {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--landing-text-muted);
+  margin: 0;
+}
+
+/* Dynamic Tab Bar */
+.roleTabsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.roleTabBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 24px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--landing-text-soft);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.roleTabBtn:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.roleTabBtn.active {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.15) 100%);
+  border-color: #34d399;
+  color: #86efac;
+  box-shadow: 0 4px 20px rgba(16, 185, 129, 0.2);
+}
+
+/* Role Showcase Card */
+.roleCardStage {
+  background: var(--landing-bg-card);
+  border: 1px solid var(--landing-border);
+  border-radius: 24px;
+  padding: 40px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+}
+
+.roleContentCol h3 {
+  font-size: 28px;
+  font-weight: 800;
+  margin: 0 0 12px;
+  color: #fff;
+}
+
+.roleContentCol .roleBadgeNotice {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 16px;
+}
+
+.roleBadgeNotice.farmer {
+  background: rgba(34, 197, 94, 0.2);
+  color: #86efac;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.roleBadgeNotice.buyer {
+  background: rgba(2, 132, 199, 0.2);
+  color: #7dd3fc;
+  border: 1px solid rgba(2, 132, 199, 0.3);
+}
+
+.roleBadgeNotice.transporter {
+  background: rgba(217, 119, 6, 0.2);
+  color: #fde047;
+  border: 1px solid rgba(217, 119, 6, 0.3);
+}
+
+.roleContentCol p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--landing-text-muted);
+  margin-bottom: 24px;
+}
+
+.roleFeatureList {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 32px;
+}
+
+.roleFeatureItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.roleCheckIcon {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: rgba(34, 197, 94, 0.15);
+  color: #34d399;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.roleFeatureItem span {
+  font-size: 14px;
+  color: #e2e8f0;
+  line-height: 1.5;
+}
+
+.roleMediaCol {
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.roleImg {
+  width: 100%;
+  height: 340px;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==================== 4. BENTO FEATURE GRID ==================== */
+.sectionBento {
+  padding: 80px 0;
+}
+
+.bentoGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.bentoCard {
+  background: var(--landing-bg-card);
+  border: 1px solid var(--landing-border);
+  border-radius: 20px;
+  padding: 32px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.bentoCard:hover {
+  transform: translateY(-6px);
+  border-color: var(--landing-border-hover);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
+
+.bentoSpan2 {
+  grid-column: span 2;
+}
+
+.bentoIconBadge {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.25);
+  color: #34d399;
+  display: grid;
+  place-items: center;
+  margin-bottom: 20px;
+}
+
+.bentoIconBadge.gold {
+  background: rgba(245, 158, 11, 0.12);
+  border-color: rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+}
+
+.bentoIconBadge.blue {
+  background: rgba(2, 132, 199, 0.12);
+  border-color: rgba(2, 132, 199, 0.25);
+  color: #38bdf8;
+}
+
+.bentoCard h4 {
+  font-size: 20px;
+  font-weight: 750;
+  color: #ffffff;
+  margin: 0 0 10px;
+}
+
+.bentoCard p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--landing-text-muted);
+  margin: 0 0 18px;
+}
+
+.bentoTagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.bentoTag {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #cbd5e1;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ==================== 5. INTERACTIVE PROCESS TIMELINE ==================== */
+.sectionProcess {
+  padding: 80px 0;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.processStepsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  position: relative;
+}
+
+.processStepCard {
+  background: rgba(14, 38, 25, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  padding: 26px 20px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.processStepCard:hover {
+  border-color: rgba(52, 211, 153, 0.4);
+  transform: translateY(-4px);
+  background: rgba(14, 38, 25, 0.85);
+}
+
+.stepNumberBadge {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #10b981 0%, #047857 100%);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.processStepCard h5 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 8px;
+}
+
+.processStepCard p {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--landing-text-muted);
+  margin: 0;
+}
+
+/* ==================== 6. CALL TO ACTION SECTION ==================== */
+.sectionCta {
+  padding: 90px 0;
+}
+
+.ctaCardBox {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.15) 0%, rgba(6, 78, 59, 0.45) 50%, rgba(4, 30, 20, 0.8) 100%);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  border-radius: 28px;
+  padding: 60px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+}
+
+.ctaCardBox h2 {
+  font-size: 38px;
+  font-weight: 850;
+  color: #fff;
+  margin: 0 0 16px;
+}
+
+.ctaCardBox p {
+  font-size: 17px;
+  color: #cbd5e1;
+  max-width: 620px;
+  margin: 0 auto 36px;
+  line-height: 1.6;
+}
+
+.ctaBtnCluster {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.btnCtaLoginPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #042f1a;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.2);
+  transition: all 0.25s ease;
+}
+
+.btnCtaLoginPrimary:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(255, 255, 255, 0.3);
+}
+
+.btnCtaRegisterSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 32px;
+  border-radius: 12px;
+  background: rgba(16, 185, 129, 0.2);
+  border: 1px solid #34d399;
+  color: #86efac;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btnCtaRegisterSecondary:hover {
+  background: rgba(16, 185, 129, 0.35);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ==================== 7. FOOTER ==================== */
+.landingFooter {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 60px 0 30px;
+  background: #040e08;
+}
+
+.footerGrid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 40px;
+  margin-bottom: 48px;
+}
+
+.footerColBrand p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--landing-text-muted);
+  max-width: 320px;
+  margin: 16px 0 0;
+}
+
+.footerCol h6 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 0 18px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.footerLinks {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footerLinks li button,
+.footerLinks li a {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  color: var(--landing-text-muted);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+  text-align: left;
+}
+
+.footerLinks li button:hover,
+.footerLinks li a:hover {
+  color: #86efac;
+}
+
+.footerBottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 13px;
+  color: #64748b;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* ==================== RESPONSIVENESS ==================== */
+@media (max-width: 1024px) {
+  .landingHeroGrid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .heroImageCard {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .roleCardStage {
+    grid-template-columns: 1fr;
+    padding: 28px;
+  }
+  .bentoGrid {
+    grid-template-columns: 1fr;
+  }
+  .bentoSpan2 {
+    grid-column: span 1;
+  }
+  .processStepsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footerGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .landingNavLinks {
+    display: none;
+  }
+  .mobileMenuToggle {
+    display: block;
+  }
+  .heroTitle {
+    font-size: 34px;
+  }
+  .processStepsGrid {
+    grid-template-columns: 1fr;
+  }
+  .footerGrid {
+    grid-template-columns: 1fr;
+  }
+  .ctaCardBox {
+    padding: 40px 20px;
+  }
+  .ctaCardBox h2 {
+    font-size: 28px;
+  }
+  .floatingGlassBadge {
+    position: static;
+    margin-top: 14px;
+  }
+}

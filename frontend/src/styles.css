@@ -2212,6 +2212,27 @@ td small { display: block; color: #89948d; margin-top: 3px; }
   position: relative;
 }
 
+.authBackToLandingBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  background: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  color: #334155;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  transition: all 0.2s ease;
+}
+
+.authBackToLandingBtn:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+  transform: translateX(-2px);
+}
+
 .authHeader {
   text-align: center;
   margin-bottom: 24px;

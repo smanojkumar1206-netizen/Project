@@ -10,6 +10,7 @@ import {
 } from "./data/seedData";
 
 import AuthPage from "./pages/auth/AuthPage";
+import LandingPage from "./pages/landing/LandingPage";
 import { signOutUser, getRegisteredUsersStore } from "./services/authApi";
 import RoleGuard from "./components/RoleGuard";
 
@@ -85,6 +86,10 @@ function App() {
   const [toast, setToast] = useState("");
   const [assistantOpen, setAssistantOpen] = useState(false);
   const [notifOpen, setNotifOpen] = useState(false);
+
+  // Unauthenticated landing page & auth routing state
+  const [unauthView, setUnauthView] = useState("landing"); // 'landing' | 'auth'
+  const [authInitialView, setAuthInitialView] = useState("login"); // 'welcome' | 'login' | 'register'
 
   // Synchronize Registered Users with Database Store (Requirement #8)
   const [users, setUsers] = useState(() => getRegisteredUsersStore());
@@ -186,6 +191,7 @@ function App() {
     localStorage.removeItem("agriconnect_session");
     setIsAuthenticated(false);
     setCurrentUserProfile(null);
+    setUnauthView("landing");
     notify("Session ended. Signed out successfully.");
   };
 
@@ -570,9 +576,25 @@ function App() {
     return null;
   };
 
-  // Requirement #1: First Screen must be Welcome/Login page if not authenticated
+  // Unauthenticated routing: Public Landing Page by default, with dedicated routing to Auth/Login
   if (!isAuthenticated) {
-    return <AuthPage onLoginSuccess={handleLoginSuccess} />;
+    if (unauthView === "auth") {
+      return (
+        <AuthPage
+          initialView={authInitialView}
+          onBackToLanding={() => setUnauthView("landing")}
+          onLoginSuccess={handleLoginSuccess}
+        />
+      );
+    }
+    return (
+      <LandingPage
+        onNavigateToAuth={(targetView = "login") => {
+          setAuthInitialView(targetView);
+          setUnauthView("auth");
+        }}
+      />
+    );
   }
 
   const userScopedNotifs = notifications.filter(

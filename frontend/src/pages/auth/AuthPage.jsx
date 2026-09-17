@@ -35,9 +35,15 @@ function GoogleIcon() {
   );
 }
 
-export default function AuthPage({ onLoginSuccess }) {
+export default function AuthPage({ onLoginSuccess, initialView = "welcome", onBackToLanding }) {
   // View states: 'welcome' | 'login' | 'register' | 'google-onboard'
-  const [view, setView] = useState("welcome");
+  const [view, setView] = useState(initialView);
+
+  useEffect(() => {
+    if (initialView) {
+      setView(initialView);
+    }
+  }, [initialView]);
 
   // Standard Registration Form State
   const [regRole, setRegRole] = useState("FARMER"); // FARMER, BUYER, TRANSPORTER ONLY
@@ -306,6 +312,16 @@ export default function AuthPage({ onLoginSuccess }) {
   return (
     <div className="authPageContainer">
       <div className="authCardWrapper">
+        {onBackToLanding && (
+          <button
+            type="button"
+            className="authBackToLandingBtn"
+            onClick={onBackToLanding}
+          >
+            <ArrowLeft size={16} /> Back to AgriConnect Home
+          </button>
+        )}
+
         {/* Brand Header */}
         <div className="authHeader">
           <div className="authLogo">
