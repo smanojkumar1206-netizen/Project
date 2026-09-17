@@ -10,7 +10,7 @@ import {
 } from "./data/seedData";
 
 import AuthPage from "./pages/auth/AuthPage";
-import { signOutUser, getRegisteredUsersStore } from "./services/supabase";
+import { signOutUser, getRegisteredUsersStore } from "./services/authApi";
 import RoleGuard from "./components/RoleGuard";
 
 import Sidebar from "./components/Sidebar";

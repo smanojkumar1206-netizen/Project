@@ -4,7 +4,7 @@
  * Enforces User Chat Privacy Scoping (userId & role)
  */
 
-const BACKEND_URL = "http://localhost:8000/api/assistant/chat";
+const BACKEND_URL = "/api/assistant/chat";
 
 /**
  * Detect language across 7 regional languages
