@@ -3,13 +3,13 @@
  * Fetches CVRP + A* route optimization details from FastAPI backend or calculates client-side fallback
  */
 
-const BACKEND_ROUTE_URL = "http://localhost:8000/api/routes";
+import { api } from "./api";
 
 export async function fetchOptimizedRoute(transportRequestId = "TR-801") {
   try {
-    const res = await fetch(`${BACKEND_ROUTE_URL}/${transportRequestId}`);
-    if (res.ok) {
-      return await res.json();
+    const data = await api.get(`/api/routes/${transportRequestId}`);
+    if (data) {
+      return data;
     }
   } catch (err) {
     console.warn("Backend Route API offline, using client-side CVRP optimizer engine:", err.message);

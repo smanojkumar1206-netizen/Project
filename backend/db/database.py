@@ -1,11 +1,13 @@
 import os
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
+from db.mongo import is_mongo_connected, get_sync_db
+from db.models import serialize_mongo_doc
+from services.auth_service import hash_password, verify_password
 
-DATA_MODE = os.getenv("DATA_MODE", "demo").lower()
+DATA_MODE = os.getenv("DATA_MODE", "mongodb").lower()
 
 PREDEFINED_ADMIN = {
     "id": "USR-ADMIN-001",
-    "auth_user_id": "demo-auth-admin-001",
     "full_name": "System Administrator",
     "email": "admin@agriconnect.com",
     "phone": "+91 90000 00000",
@@ -18,36 +20,39 @@ PREDEFINED_ADMIN = {
 INITIAL_USERS = [
     {
         "id": "USR-FARMER-1",
-        "auth_user_id": "demo-auth-farmer-1",
         "full_name": "Ravi Kumar",
         "email": "farmer@agriconnect.org",
         "phone": "+91 98765 43210",
         "role": "farmer",
         "location": "Melur, Madurai",
         "createdAt": "02 Sep 2026",
-        "status": "Active"
+        "status": "Active",
+        "produce_categories": ["Tomato", "Chilli", "Brinjal"],
+        "farm_details": "12 Acres organic vegetable farm in Melur"
     },
     {
         "id": "USR-BUYER-1",
-        "auth_user_id": "demo-auth-buyer-1",
         "full_name": "Madurai Fresh Mart",
         "email": "buyer@agriconnect.org",
         "phone": "+91 94433 12345",
         "role": "buyer",
         "location": "Madurai Town",
         "createdAt": "03 Sep 2026",
-        "status": "Active"
+        "status": "Active",
+        "business_name": "Madurai Fresh Mart Pvt Ltd",
+        "required_categories": ["Tomato", "Onion", "Potato"]
     },
     {
         "id": "USR-TRANSPORTER-1",
-        "auth_user_id": "demo-auth-transporter-1",
         "full_name": "Express Logistics",
         "email": "transporter@agriconnect.org",
         "phone": "+91 91234 56789",
         "role": "transporter",
         "location": "Madurai Logistics Park",
         "createdAt": "04 Sep 2026",
-        "status": "Active"
+        "status": "Active",
+        "vehicle_type": "Refrigerated Truck (5 Ton)",
+        "vehicle_capacity": "5,000 kg"
     },
     PREDEFINED_ADMIN
 ]
@@ -160,32 +165,119 @@ class DatabaseAdapter:
         self.storage = list(INITIAL_STORAGE)
         self.iot_devices = list(INITIAL_IOT)
 
-    def register_user(self, full_name: str, email: str, phone: str, role: str, location: str) -> Dict[str, Any]:
+    def _get_mongo(self):
+        """Returns sync mongo db if available and initialized."""
+        return get_sync_db()
+
+    def register_user(
+        self,
+        full_name: str,
+        email: str,
+        phone: Optional[str] = None,
+        role: str = "farmer",
+        location: Optional[str] = "Madurai",
+        password: Optional[str] = None,
+        google_id: Optional[str] = None,
+        picture: Optional[str] = None,
+        extra_fields: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         user_id = f"USR-{role.upper()}-{len(self.users) + 100}"
+        hashed_pwd = hash_password(password) if password else None
+
         user_profile = {
             "id": user_id,
-            "auth_user_id": f"auth-{user_id.lower()}",
             "full_name": full_name,
-            "email": email,
-            "phone": phone,
+            "email": email.lower().strip(),
+            "phone": phone or "",
             "role": role.lower(),
-            "location": location,
+            "location": location or "Madurai",
+            "hashed_password": hashed_pwd,
+            "google_id": google_id,
+            "picture": picture,
             "createdAt": "Today",
             "status": "Active"
         }
+
+        if extra_fields:
+            user_profile.update(extra_fields)
+
+        # 1. Try MongoDB
+        mongo = self._get_mongo()
+        if mongo is not None:
+            try:
+                mongo.users.update_one(
+                    {"email": user_profile["email"]},
+                    {"$set": dict(user_profile)},
+                    upsert=True
+                )
+            except Exception as e:
+                pass
+
+        # 2. Update in-memory store
+        self.users = [u for u in self.users if u.get("email", "").lower() != user_profile["email"]]
         self.users.insert(0, user_profile)
-        return user_profile
+        
+        # Don't return hashed_password in response
+        safe_profile = dict(user_profile)
+        safe_profile.pop("hashed_password", None)
+        return safe_profile
+
+    def get_user_by_email(self, email: str) -> Optional[Dict[str, Any]]:
+        clean_email = email.lower().strip()
+        mongo = self._get_mongo()
+        if mongo is not None:
+            try:
+                doc = mongo.users.find_one({"email": clean_email})
+                if doc:
+                    return serialize_mongo_doc(doc)
+            except Exception:
+                pass
+
+        for u in self.users:
+            if u.get("email", "").lower() == clean_email:
+                return u
+        return None
+
+    def get_user_by_google_id(self, google_id: str) -> Optional[Dict[str, Any]]:
+        if not google_id:
+            return None
+        mongo = self._get_mongo()
+        if mongo is not None:
+            try:
+                doc = mongo.users.find_one({"google_id": google_id})
+                if doc:
+                    return serialize_mongo_doc(doc)
+            except Exception:
+                pass
+
+        for u in self.users:
+            if u.get("google_id") == google_id:
+                return u
+        return None
 
     def get_users(self, role_filter: str = None) -> List[Dict[str, Any]]:
-        if not role_filter or role_filter.lower() == "all" or role_filter.lower() == "users":
+        mongo = self._get_mongo()
+        if mongo is not None:
+            try:
+                query = {}
+                if role_filter and role_filter.lower() not in ["all", "users"]:
+                    query["role"] = role_filter.lower()
+                docs = list(mongo.users.find(query))
+                if docs:
+                    return [serialize_mongo_doc(d) for d in docs]
+            except Exception:
+                pass
+
+        if not role_filter or role_filter.lower() in ["all", "users"]:
             return self.users
         return [u for u in self.users if u.get("role", "").lower() == role_filter.lower()]
 
     def get_admin_stats(self) -> Dict[str, Any]:
-        total_users = len(self.users)
-        farmers = len([u for u in self.users if u.get("role") == "farmer"])
-        buyers = len([u for u in self.users if u.get("role") == "buyer"])
-        transporters = len([u for u in self.users if u.get("role") == "transporter"])
+        users = self.get_users("all")
+        total_users = len(users)
+        farmers = len([u for u in users if u.get("role") == "farmer"])
+        buyers = len([u for u in users if u.get("role") == "buyer"])
+        transporters = len([u for u in users if u.get("role") == "transporter"])
         active_orders = len([o for o in self.orders if o.get("status") != "DELIVERED"])
         active_transport = len(self.transport_requests) + len(self.active_trips)
         listings_count = len(self.listings)
@@ -197,17 +289,38 @@ class DatabaseAdapter:
             "transporters": transporters,
             "active_orders": active_orders,
             "active_transport": active_transport,
-            "listings_count": listings_count
+            "listings_count": listings_count,
+            "database": "MongoDB" if is_mongo_connected() else "In-Memory Fallback"
         }
 
     def get_order_by_id(self, order_id: str) -> Dict[str, Any]:
         o_clean = order_id.upper().strip()
+        mongo = self._get_mongo()
+        if mongo is not None:
+            try:
+                doc = mongo.orders.find_one({"id": o_clean})
+                if doc:
+                    return serialize_mongo_doc(doc)
+            except Exception:
+                pass
+
         for o in self.orders:
             if o["id"] == o_clean or o_clean in o["id"]:
                 return o
         return self.orders[0]
 
-    def create_order(self, crop: str, qty: float, price: float, buyer_name: str, buyer_id: str, farmer_name: str, farmer_id: str, pickup: str, delivery: str) -> Dict[str, Any]:
+    def create_order(
+        self,
+        crop: str,
+        qty: float,
+        price: float,
+        buyer_name: str,
+        buyer_id: str,
+        farmer_name: str,
+        farmer_id: str,
+        pickup: str,
+        delivery: str
+    ) -> Dict[str, Any]:
         order_id = f"ORD-{len(self.orders) + 1045}"
         new_order = {
             "id": order_id,
@@ -227,6 +340,14 @@ class DatabaseAdapter:
             "pickupLocation": pickup,
             "deliveryLocation": delivery
         }
+
+        mongo = self._get_mongo()
+        if mongo is not None:
+            try:
+                mongo.orders.insert_one(dict(new_order))
+            except Exception:
+                pass
+
         self.orders.insert(0, new_order)
         return new_order
 
@@ -253,6 +374,15 @@ class DatabaseAdapter:
             "status": "WAITING_FOR_TRANSPORT",
             "assigned_transporter": None
         }
+
+        mongo = self._get_mongo()
+        if mongo is not None:
+            try:
+                mongo.orders.update_one({"id": order["id"]}, {"$set": {"status": "ACCEPTED", "transport_status": "WAITING_FOR_TRANSPORT"}})
+                mongo.transport_requests.insert_one(dict(new_tr))
+            except Exception:
+                pass
+
         self.transport_requests.insert(0, new_tr)
         return {"order": order, "transport_request": new_tr}
 
@@ -286,6 +416,16 @@ class DatabaseAdapter:
                     "destination": order["deliveryLocation"]
                 }
                 self.active_trips.insert(0, trip)
+
+                mongo = self._get_mongo()
+                if mongo is not None:
+                    try:
+                        mongo.transport_requests.update_one({"id": tr["id"]}, {"$set": {"status": "ASSIGNED", "assigned_transporter": vehicle}})
+                        mongo.orders.update_one({"id": order["id"]}, {"$set": {"status": "TRANSPORT_ASSIGNED", "transport_status": "ASSIGNED", "transporter": vehicle, "transporter_id": transporter_id}})
+                        mongo.active_trips.insert_one(dict(trip))
+                    except Exception:
+                        pass
+
                 return {"transport_request": tr, "order": order, "trip": trip}
 
         return {"error": "Transport request not found"}
@@ -301,6 +441,15 @@ class DatabaseAdapter:
         if target_trip:
             order = self.get_order_by_id(target_trip["orderId"])
             order["status"] = status
+
+            mongo = self._get_mongo()
+            if mongo is not None:
+                try:
+                    mongo.active_trips.update_one({"id": target_trip["id"]}, {"$set": {"status": status}})
+                    mongo.orders.update_one({"id": order["id"]}, {"$set": {"status": status}})
+                except Exception:
+                    pass
+
             return {"trip": target_trip, "order": order}
 
         return {"error": "Trip not found"}
